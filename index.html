@@ -85,7 +85,6 @@
       }
     }
 
-    /* Textos flotantes rápidos y directos sin tween */
     .score-popup {
       position: absolute;
       font-family: 'PixelEmulator', monospace;
@@ -407,7 +406,6 @@
   <a class="gamebanana-button" href="https://gamebanana.com/mods/595812" target="_blank" rel="noopener">Demo 3 Page</a>
 
   <audio id="bgMusic" src="pipe.ogg" preload="auto" loop></audio>
-
   <audio id="countdownTick" src="tick.ogg" preload="auto"></audio>
   <audio id="logoCoin" src="CoinSmb3.ogg" preload="auto"></audio>
   <audio id="oneUpSound" src="1up.wav" preload="auto"></audio>
@@ -423,7 +421,6 @@
     };
 
     const tickSound = document.getElementById("countdownTick");
-    let audioUnlocked = false;
     let lastDisplayedSecond = null;
     let countdownInterval = null;
 
@@ -432,7 +429,6 @@
 
     function playMusic() {
       const playback = bgMusic.play();
-
       if (playback && typeof playback.catch === "function") {
         playback.catch(() => {});
       }
@@ -441,21 +437,19 @@
     playMusic();
 
     function unlockAudio() {
-      audioUnlocked = true;
-      if (bgMusic.paused) playMusic();
-      document.removeEventListener("pointerdown", unlockAudio);
-      document.removeEventListener("pointermove", unlockAudio);
-      document.removeEventListener("keydown", unlockAudio);
+      if (bgMusic.paused) {
+        playMusic();
+      }
     }
 
-    document.addEventListener("pointerdown", unlockAudio);
-    document.addEventListener("pointermove", unlockAudio);
-    document.addEventListener("keydown", unlockAudio);
+    document.addEventListener("pointerdown", unlockAudio, { once: true });
+    document.addEventListener("pointermove", unlockAudio, { once: true });
+    document.addEventListener("keydown", unlockAudio, { once: true });
 
     function playTick() {
-      tickSound.currentTime = 0;
-      const playback = tickSound.play();
-
+      const cloneTick = tickSound.cloneNode();
+      cloneTick.volume = 0.4;
+      const playback = cloneTick.play();
       if (playback && typeof playback.catch === "function") {
         playback.catch(() => {});
       }
@@ -487,15 +481,15 @@
         textToShow = scoreSequence[scoreIndex];
         scoreIndex++;
 
-        coinSound.currentTime = 0;
-        const playback = coinSound.play();
+        const cloneCoin = coinSound.cloneNode();
+        const playback = cloneCoin.play();
         if (playback && typeof playback.catch === "function") playback.catch(() => {});
       } else {
         textToShow = "1UP";
         isOneUp = true;
 
-        oneUpSound.currentTime = 0;
-        const playback = oneUpSound.play();
+        const clone1Up = oneUpSound.cloneNode();
+        const playback = clone1Up.play();
         if (playback && typeof playback.catch === "function") playback.catch(() => {});
       }
 

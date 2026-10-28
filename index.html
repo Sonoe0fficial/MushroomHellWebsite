@@ -395,12 +395,28 @@
     .terminal-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       color: #b8464d;
       font-size: 9px;
       letter-spacing: 1.5px;
       border-bottom: 1px solid #492126;
       padding-bottom: 6px;
       margin-bottom: 8px;
+    }
+
+    .terminal-close-btn {
+      background: none;
+      border: 1px solid #a3242d;
+      color: #ff3b3b;
+      font-family: inherit;
+      font-size: 9px;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    .terminal-close-btn:hover {
+      background: #a3242d;
+      color: #f2eaea;
     }
 
     .terminal-body {
@@ -494,6 +510,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      cursor: pointer;
     }
 
     .egg-text {
@@ -611,6 +628,7 @@
           <li>Added classic SMB1 coin & 1-UP mechanics to the main logo click!</li>
           <li>Objects from SMB1 / Time's Up V2 float across the screen. Grab and throw them!</li>
           <li>Added Retro Achievements System with custom sounds and persistent storage.</li>
+          <li>Added a rare interactive Easter Egg event on page load (Lua style).</li>
           <li>Added a Secure Terminal (accessible via Konami code, 5 taps, or mobile button).</li>
           <li>Added full mobile responsiveness, touch-friendly UI, and fixed audio unlocking.</li>
         </ul>
@@ -622,7 +640,7 @@
     <div class="terminal-box">
       <div class="terminal-header">
         <span>MUSHROOM_OS v1.0 // SECURE_TERMINAL</span>
-        <span>[ESC TO CLOSE]</span>
+        <button class="terminal-close-btn" id="terminalCloseBtn" type="button">[X] CLOSE</button>
       </div>
       <div class="terminal-body" id="terminalBody">
         <div>SYSTEM INITIALIZED...</div>
@@ -638,7 +656,7 @@
 
   <div class="egg-overlay" id="eggOverlay">
     <img class="egg-img" src="egg.png" alt="Egg">
-    <div class="egg-dialogue-container">
+    <div class="egg-dialogue-container" id="eggDialogueContainer">
       <div class="egg-text" id="eggText">Well, there is a man here.<br>He offers you something.</div>
       <div class="egg-instructions" id="eggInstructions">[ PRESS SPACE / TAP TO CONTINUE ]</div>
     </div>
@@ -700,6 +718,7 @@
     const eggOverlay = document.getElementById("eggOverlay");
     const eggText = document.getElementById("eggText");
     const eggInstructions = document.getElementById("eggInstructions");
+    const eggDialogueContainer = document.getElementById("eggDialogueContainer");
     const eggAudio = document.getElementById("eggAudio");
     const menuMoveSound = document.getElementById("menuMoveSound");
     const menuSelectSound = document.getElementById("menuSelectSound");
@@ -733,7 +752,7 @@
       const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       const continueText = isMobile ? "[ TAP TO CONTINUE ]" : "[ PRESS SPACE TO CONTINUE ]";
       const exitText = isMobile ? "[ TAP TO EXIT ]" : "[ PRESS SPACE TO EXIT ]";
-      const choiceText = isMobile ? "[ TAP A / D OR USE BUTTONS ]" : "[ USE A / D OR LEFT / RIGHT & SPACE ]";
+      const choiceText = isMobile ? "[ TAP CHOICE OR USE A/D ]" : "[ USE A / D OR LEFT / RIGHT & SPACE ]";
 
       if (eggDialogueStep === 1) {
         eggText.innerHTML = "Well, there is a man here.<br>He offers you something.";
@@ -784,7 +803,8 @@
       }
     }
 
-    eggOverlay.addEventListener("click", (e) => {
+    eggDialogueContainer.addEventListener("click", (e) => {
+      e.stopPropagation();
       if (!isEggActive) return;
       if (eggDialogueStep === 2) {
         eggChoice = eggChoice === 1 ? 2 : 1;
@@ -897,6 +917,7 @@
     const terminalInput = document.getElementById("terminalInput");
     const terminalTrigger = document.getElementById("terminalTrigger");
     const mobileTerminalBtn = document.getElementById("mobileTerminalBtn");
+    const terminalCloseBtn = document.getElementById("terminalCloseBtn");
 
     let touchCount = 0;
     let touchTimer = null;
@@ -919,6 +940,16 @@
     mobileTerminalBtn.addEventListener("click", () => {
       toggleTerminal(true);
       unlockAchievement('hacker');
+    });
+
+    terminalCloseBtn.addEventListener("click", () => {
+      toggleTerminal(false);
+    });
+
+    terminalOverlay.addEventListener("click", (e) => {
+      if (e.target === terminalOverlay) {
+        toggleTerminal(false);
+      }
     });
 
     document.addEventListener("keydown", (e) => {
@@ -1314,7 +1345,7 @@
     updateCountdown();
     countdownInterval = setInterval(updateCountdown, 200);
 
-    window.addEventListener("load", () => {
+    window.addEventListener("DOMContentLoaded", () => {
       checkEggSpawn();
     });
   </script>

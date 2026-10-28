@@ -28,7 +28,7 @@
       background: radial-gradient(ellipse at center, #260c0f 0%, #100607 48%, #030303 100%);
       color: #eee7e7;
       font-family: "PixelEmulator", "Courier New", monospace;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     body::before {
@@ -48,20 +48,21 @@
     .container {
       width: min(720px, 92%);
       text-align: center;
-      padding: 35px 0;
+      padding: 20px 0;
       position: relative;
+      z-index: 3;
     }
 
     .logo-wrapper {
       position: relative;
       display: inline-block;
-      margin: 0 auto 35px;
+      margin: 0 auto 20px;
     }
 
     .logo {
       display: block;
-      width: min(100%, 520px);
-      max-height: 300px;
+      width: min(100%, 460px);
+      max-height: 260px;
       object-fit: contain;
       filter: drop-shadow(0 0 22px #a3242d40);
       cursor: pointer;
@@ -119,17 +120,17 @@
 
     .lives-counter {
       position: fixed;
-      left: 20px;
+      left: 15px;
       top: 50%;
       transform: translateY(-50%);
       z-index: 10;
       background: #100909;
       border: 1px solid #a3242d;
       box-shadow: 0 0 15px #a3242d55;
-      padding: 10px 14px;
+      padding: 8px 12px;
       display: none;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       font-family: 'PixelEmulator', monospace;
       color: #ffe600;
       text-shadow: 0 0 8px #ffe60066;
@@ -140,72 +141,72 @@
     }
 
     .lives-counter img {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       image-rendering: pixelated;
     }
 
     .lives-counter .lives-num {
-      font-size: clamp(14px, 2vw, 18px);
+      font-size: clamp(12px, 2vw, 16px);
       color: #f2eaea;
     }
 
     .slogan {
-      max-width: 640px;
+      max-width: 600px;
       margin: 0 auto;
       color: #d0bfc0;
-      font-size: clamp(10px, 2vw, 13px);
-      line-height: 2;
-      letter-spacing: 1.5px;
+      font-size: clamp(9px, 1.8vw, 12px);
+      line-height: 1.8;
+      letter-spacing: 1.2px;
       text-shadow: 0 0 10px #a3242d22;
     }
 
     .separator {
-      width: 85px;
+      width: 75px;
       height: 2px;
       background: #a3242d;
-      margin: 35px auto;
+      margin: 25px auto;
       box-shadow: 0 0 15px #a3242d66;
     }
 
     .heading {
       color: #b8464d;
-      font-size: 11px;
-      letter-spacing: 4px;
-      margin-bottom: 20px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
     }
 
     .countdown {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
+      gap: 8px;
     }
 
     .unit {
-      padding: 22px 4px;
+      padding: 16px 4px;
       background: #100909;
       border: 1px solid #492126;
       box-shadow: inset 0 0 20px #a3242d0a;
     }
 
     .number {
-      font-size: clamp(20px, 5vw, 38px);
+      font-size: clamp(18px, 4.5vw, 34px);
       font-variant-numeric: tabular-nums;
       color: #f2eaea;
     }
 
     .label {
-      margin-top: 10px;
-      font-size: 9px;
+      margin-top: 8px;
+      font-size: 8px;
       color: #c44a51;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
     }
 
     .footer {
-      margin-top: 35px;
+      margin-top: 25px;
       color: #6d5356;
-      font-size: 10px;
-      letter-spacing: 3px;
+      font-size: 9px;
+      letter-spacing: 2px;
       cursor: pointer;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
@@ -216,20 +217,16 @@
       color: #a3242d;
     }
 
-    @media (max-width: 440px) {
+    @media (max-width: 500px) {
       .countdown {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .logo {
-        margin-bottom: 25px;
-      }
-      .unit {
-        padding: 18px 4px;
+        gap: 10px;
       }
       .lives-counter {
-        top: 20px;
-        left: 16px;
+        top: 12px;
+        left: 12px;
         transform: none;
+        padding: 6px 10px;
       }
     }
 
@@ -262,11 +259,11 @@
 
     .info-button {
       position: fixed;
-      top: 16px;
-      right: 16px;
+      top: 12px;
+      right: 12px;
       z-index: 11;
-      width: 52px;
-      height: 52px;
+      width: 44px;
+      height: 44px;
       padding: 0;
       border: 0;
       background: none;
@@ -302,7 +299,7 @@
 
     .lore-frame {
       position: relative;
-      width: min(100vw, 177.78vh);
+      width: min(95vw, 177.78vh);
       aspect-ratio: 16 / 9;
       background: url("ui/lorething.png") center / contain no-repeat;
     }
@@ -320,17 +317,17 @@
       justify-content: center;
       text-align: center;
       color: #f2e0d8;
-      font-size: clamp(9px, 1.5vmin, 14px);
-      line-height: 1.7;
+      font-size: clamp(8px, 1.4vmin, 13px);
+      line-height: 1.6;
       letter-spacing: 1px;
       text-shadow: 0 0 6px #000;
     }
 
     .lore-text h2 {
-      margin: 0 0 1em;
+      margin: 0 0 0.8em;
       color: #ff3b3b;
-      font-size: 1.25em;
-      letter-spacing: 3px;
+      font-size: 1.2em;
+      letter-spacing: 2px;
     }
 
     .lore-text ul {
@@ -340,27 +337,27 @@
     }
 
     .lore-text li {
-      margin-bottom: 0.9em;
+      margin-bottom: 0.8em;
     }
 
     .discord-button, .gamebanana-button {
       position: fixed;
-      right: 18px;
+      right: 12px;
       z-index: 11;
-      padding: 12px 18px;
+      padding: 10px 14px;
       background: #100909;
       border: 1px solid #a3242d;
       color: #f2eaea;
       font-family: inherit;
-      font-size: 11px;
-      letter-spacing: 2px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
       text-decoration: none;
       box-shadow: 0 0 15px #a3242d55;
       transition: background 0.15s, transform 0.15s;
     }
 
-    .discord-button { bottom: 68px; }
-    .gamebanana-button { bottom: 18px; }
+    .discord-button { bottom: 58px; }
+    .gamebanana-button { bottom: 12px; }
 
     .discord-button:hover, .gamebanana-button:hover {
       background: #a3242d;
@@ -374,8 +371,9 @@
       display: none;
       justify-content: center;
       align-items: center;
-      background: rgba(3, 3, 3, 0.85);
-      backdrop-filter: blur(3px);
+      background: rgba(3, 3, 3, 0.88);
+      backdrop-filter: blur(4px);
+      padding: 10px;
     }
 
     .terminal-overlay.open {
@@ -383,14 +381,14 @@
     }
 
     .terminal-box {
-      width: min(640px, 90%);
-      height: 380px;
+      width: min(600px, 95%);
+      height: min(360px, 85vh);
       background: #080505;
       border: 2px solid #a3242d;
       box-shadow: 0 0 30px #a3242d55;
       display: flex;
       flex-direction: column;
-      padding: 15px;
+      padding: 12px;
       font-family: "PixelEmulator", "Courier New", monospace;
     }
 
@@ -398,37 +396,37 @@
       display: flex;
       justify-content: space-between;
       color: #b8464d;
-      font-size: 10px;
-      letter-spacing: 2px;
+      font-size: 9px;
+      letter-spacing: 1.5px;
       border-bottom: 1px solid #492126;
-      padding-bottom: 8px;
-      margin-bottom: 10px;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .terminal-body {
       flex: 1;
       overflow-y: auto;
       color: #f2eaea;
-      font-size: 11px;
-      line-height: 1.6;
+      font-size: 10px;
+      line-height: 1.5;
       text-shadow: 0 0 5px #a3242d44;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
 
     .terminal-input-line {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 6px;
+      margin-top: 8px;
       border-top: 1px solid #492126;
-      padding-top: 8px;
+      padding-top: 6px;
     }
 
     .terminal-prompt {
       color: #ff3b3b;
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .terminal-input {
@@ -438,7 +436,33 @@
       outline: none;
       color: #f2eaea;
       font-family: inherit;
-      font-size: 11px;
+      font-size: 10px;
+    }
+
+    .mobile-terminal-btn {
+      position: fixed;
+      left: 12px;
+      bottom: 12px;
+      z-index: 11;
+      padding: 8px 12px;
+      background: #100909;
+      border: 1px solid #a3242d;
+      color: #ff3b3b;
+      font-family: inherit;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #a3242d44;
+      display: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    @media (max-width: 650px) {
+      .mobile-terminal-btn {
+        display: block;
+      }
+      .discord-button { bottom: 94px; }
+      .gamebanana-button { bottom: 50px; }
     }
 
     .egg-overlay {
@@ -450,8 +474,9 @@
       align-items: center;
       background: #030303;
       flex-direction: column;
-      gap: 25px;
+      gap: 20px;
       font-family: 'PixelEmulator', monospace;
+      padding: 15px;
     }
 
     .egg-overlay.open {
@@ -459,69 +484,69 @@
     }
 
     .egg-img {
-      width: min(75vw, 200px);
+      width: min(65vw, 170px);
       image-rendering: pixelated;
     }
 
     .egg-dialogue-container {
-      width: min(600px, 90%);
+      width: min(550px, 92%);
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
     }
 
     .egg-text {
       color: #f2eaea;
-      font-size: clamp(11px, 2.2vw, 15px);
-      line-height: 2.2;
-      letter-spacing: 2px;
+      font-size: clamp(10px, 2.2vw, 14px);
+      line-height: 2;
+      letter-spacing: 1.5px;
       text-shadow: 0 0 6px #ff3b3b88;
       white-space: pre-line;
     }
 
     .egg-instructions {
       color: #6d5356;
-      font-size: 9px;
-      letter-spacing: 2px;
+      font-size: 8.5px;
+      letter-spacing: 1.5px;
     }
 
     .achievement-popup {
       position: fixed;
       bottom: -100px;
-      left: 20px;
+      left: 15px;
       z-index: 200;
       background: #100909;
       border: 1px solid #ffe600;
       box-shadow: 0 0 20px #ffe60033;
-      padding: 12px 16px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-family: 'PixelEmulator', monospace;
       transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .achievement-popup.show {
-      bottom: 20px;
+      bottom: 15px;
     }
 
     .achievement-icon-img {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       object-fit: contain;
       image-rendering: pixelated;
     }
 
     .achievement-text .ach-title {
-      font-size: 9px;
+      font-size: 8px;
       color: #ffe600;
-      letter-spacing: 2px;
-      margin-bottom: 4px;
+      letter-spacing: 1.5px;
+      margin-bottom: 3px;
     }
 
     .achievement-text .ach-name {
-      font-size: 11px;
+      font-size: 10px;
       color: #f2eaea;
     }
   </style>
@@ -563,6 +588,8 @@
     <div class="footer" id="terminalTrigger">FNF: MUSHROOM HELL</div>
   </main>
 
+  <button class="mobile-terminal-btn" id="mobileTerminalBtn" type="button">TERMINAL</button>
+
   <div class="lives-counter" id="livesCounter">
     <img src="1up.png" alt="1UP">
     <span>x</span>
@@ -581,11 +608,11 @@
         <h2>CHANGELOG</h2>
         <ul>
           <li>Demo 3 Hotfix postponed to Nov 11th for extra polish & bug fixes.</li>
-          <li>Added a function to the logo that if you pressed it will work as smb1.</li>
-          <li>Objects from smb1 or from time's up v2 are floating across the screen. Grab them and throw them!</li>
-          <li>Added this changelog panel LMAO.</li>
-          <li>Added buttons to Discord and GameBanana.</li>
-          <li>Added background song and fixed in mobile supports.</li>
+          <li>Added classic SMB1 coin & 1-UP mechanics to the main logo click!</li>
+          <li>Objects from SMB1 / Time's Up V2 float across the screen. Grab and throw them!</li>
+          <li>Added Retro Achievements System with custom sounds and persistent storage.</li>
+          <li>Added a Secure Terminal (accessible via Konami code, 5 taps, or mobile button).</li>
+          <li>Added full mobile responsiveness, touch-friendly UI, and fixed audio unlocking.</li>
         </ul>
       </div>
     </div>
@@ -599,7 +626,7 @@
       </div>
       <div class="terminal-body" id="terminalBody">
         <div>SYSTEM INITIALIZED...</div>
-        <div>Type 'help' to see commands. Type 'reset' to wipe achievements & lives.</div>
+        <div>Type 'help' to see commands. Type 'reset' to wipe achievements, lives & egg.</div>
         <br>
       </div>
       <div class="terminal-input-line">
@@ -613,7 +640,7 @@
     <img class="egg-img" src="egg.png" alt="Egg">
     <div class="egg-dialogue-container">
       <div class="egg-text" id="eggText">Well, there is a man here.<br>He offers you something.</div>
-      <div class="egg-instructions" id="eggInstructions">[ PRESS SPACE TO CONTINUE ]</div>
+      <div class="egg-instructions" id="eggInstructions">[ PRESS SPACE / TAP TO CONTINUE ]</div>
     </div>
   </div>
 
@@ -703,24 +730,71 @@
     }
 
     function updateEggDisplay() {
+      const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const continueText = isMobile ? "[ TAP TO CONTINUE ]" : "[ PRESS SPACE TO CONTINUE ]";
+      const exitText = isMobile ? "[ TAP TO EXIT ]" : "[ PRESS SPACE TO EXIT ]";
+      const choiceText = isMobile ? "[ TAP A / D OR USE BUTTONS ]" : "[ USE A / D OR LEFT / RIGHT & SPACE ]";
+
       if (eggDialogueStep === 1) {
         eggText.innerHTML = "Well, there is a man here.<br>He offers you something.";
-        eggInstructions.textContent = "[ PRESS SPACE TO CONTINUE ]";
+        eggInstructions.textContent = continueText;
       } else if (eggDialogueStep === 2) {
         const yesOption = eggChoice === 1 ? "> YES <   no  " : "  yes   > NO <";
         eggText.innerHTML = "Well, there is a man here.<br>He offers you something.<br><br>" + yesOption;
-        eggInstructions.textContent = "[ USE A / D OR LEFT / RIGHT & SPACE ]";
+        eggInstructions.textContent = choiceText;
       } else if (eggDialogueStep === 3) {
         eggText.innerHTML = "You received the \"Egg\".";
-        eggInstructions.textContent = "[ PRESS SPACE TO CONTINUE ]";
+        eggInstructions.textContent = continueText;
       } else if (eggDialogueStep === 4) {
         eggText.innerHTML = "...";
-        eggInstructions.textContent = "[ PRESS SPACE TO CONTINUE ]";
+        eggInstructions.textContent = continueText;
       } else if (eggDialogueStep === 5) {
         eggText.innerHTML = "Well, there is not man here.";
-        eggInstructions.textContent = "[ PRESS SPACE TO EXIT ]";
+        eggInstructions.textContent = exitText;
       }
     }
+
+    function advanceEggStep() {
+      menuSelectSound.currentTime = 0;
+      menuSelectSound.play().catch(() => {});
+
+      if (eggDialogueStep === 1) {
+        eggDialogueStep = hasGottenEgg ? 5 : 2;
+        updateEggDisplay();
+      } else if (eggDialogueStep === 2) {
+        if (eggChoice === 1) {
+          hasGottenEgg = true;
+          localStorage.setItem("mushroom_hell_egg", "true");
+          achievements.egg.unlocked = true;
+          saveAchievements();
+          unlockAchievementSilent('egg');
+          eggDialogueStep = 3;
+        } else {
+          eggDialogueStep = 4;
+        }
+        updateEggDisplay();
+      } else if (eggDialogueStep === 3 || eggDialogueStep === 4) {
+        eggDialogueStep = 5;
+        updateEggDisplay();
+      } else if (eggDialogueStep === 5) {
+        isEggActive = false;
+        eggOverlay.classList.remove("open");
+        eggAudio.pause();
+        eggAudio.currentTime = 0;
+      }
+    }
+
+    eggOverlay.addEventListener("click", (e) => {
+      if (!isEggActive) return;
+      if (eggDialogueStep === 2) {
+        eggChoice = eggChoice === 1 ? 2 : 1;
+        menuMoveSound.currentTime = 0;
+        menuMoveSound.play().catch(() => {});
+        updateEggDisplay();
+      } else {
+        advanceEggStep();
+      }
+    });
 
     document.addEventListener("keydown", (e) => {
       if (eggAudio.paused && isEggActive) {
@@ -745,41 +819,9 @@
 
       if (e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
-        menuSelectSound.currentTime = 0;
-        menuSelectSound.play().catch(() => {});
-
-        if (eggDialogueStep === 1) {
-          eggDialogueStep = hasGottenEgg ? 5 : 2;
-          updateEggDisplay();
-        } else if (eggDialogueStep === 2) {
-          if (eggChoice === 1) {
-            hasGottenEgg = true;
-            localStorage.setItem("mushroom_hell_egg", "true");
-            achievements.egg.unlocked = true;
-            saveAchievements();
-            unlockAchievementSilent('egg');
-            eggDialogueStep = 3;
-          } else {
-            eggDialogueStep = 4;
-          }
-          updateEggDisplay();
-        } else if (eggDialogueStep === 3 || eggDialogueStep === 4) {
-          eggDialogueStep = 5;
-          updateEggDisplay();
-        } else if (eggDialogueStep === 5) {
-          isEggActive = false;
-          eggOverlay.classList.remove("open");
-          eggAudio.pause();
-          eggAudio.currentTime = 0;
-        }
+        advanceEggStep();
       }
     });
-
-    document.addEventListener("click", () => {
-      if (isEggActive && eggAudio.paused) {
-        eggAudio.play().catch(() => {});
-      }
-    }, { passive: true });
 
     function saveAchievements() {
       const saveObj = {};
@@ -854,6 +896,7 @@
     const terminalBody = document.getElementById("terminalBody");
     const terminalInput = document.getElementById("terminalInput");
     const terminalTrigger = document.getElementById("terminalTrigger");
+    const mobileTerminalBtn = document.getElementById("mobileTerminalBtn");
 
     let touchCount = 0;
     let touchTimer = null;
@@ -871,6 +914,11 @@
       touchTimer = setTimeout(() => {
         touchCount = 0;
       }, 1000);
+    });
+
+    mobileTerminalBtn.addEventListener("click", () => {
+      toggleTerminal(true);
+      unlockAchievement('hacker');
     });
 
     document.addEventListener("keydown", (e) => {
@@ -923,7 +971,7 @@
           appendTerminalLine(" - lore: Display official Mushroom Hell lore file.");
           appendTerminalLine(" - status: Check current progress on Demo 3.");
           appendTerminalLine(" - achievements: Check your unlocked achievements.");
-          appendTerminalLine(" - reset: Wipe all achievements (except EGG) & lives.");
+          appendTerminalLine(" - reset: Wipe all achievements, lives & egg.");
           appendTerminalLine(" - clear: Clear the terminal console.");
           break;
         case "lore":
@@ -1083,11 +1131,11 @@
 
     const floaterLayer = document.getElementById("floaters");
     const floaterTypes = [
-      { src: "blocks/brick.png", minWidth: 55, maxWidth: 110 },
-      { src: "blocks/question.png", minWidth: 55, maxWidth: 110 },
-      { src: "blocks/double-question.png", minWidth: 55, maxWidth: 110 },
-      { src: "blocks/skull-block.png", minWidth: 60, maxWidth: 110 },
-      { src: "blocks/flagpole.png", minWidth: 45, maxWidth: 75 }
+      { src: "blocks/brick.png", minWidth: 50, maxWidth: 95 },
+      { src: "blocks/question.png", minWidth: 50, maxWidth: 95 },
+      { src: "blocks/double-question.png", minWidth: 50, maxWidth: 95 },
+      { src: "blocks/skull-block.png", minWidth: 55, maxWidth: 95 },
+      { src: "blocks/flagpole.png", minWidth: 40, maxWidth: 70 }
     ];
     const floaters = [];
     const MAX_FLOATERS = 8;

@@ -117,6 +117,39 @@
       }
     }
 
+    .lives-counter {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: #100909;
+      border: 1px solid #a3242d;
+      box-shadow: 0 0 15px #a3242d55;
+      padding: 10px 14px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-family: 'PixelEmulator', monospace;
+      color: #ffe600;
+      text-shadow: 0 0 8px #ffe60066;
+    }
+
+    .lives-counter.show {
+      display: flex;
+    }
+
+    .lives-counter img {
+      width: 24px;
+      height: 24px;
+      image-rendering: pixelated;
+    }
+
+    .lives-counter .lives-num {
+      font-size: clamp(14px, 2vw, 18px);
+      color: #f2eaea;
+    }
+
     .slogan {
       max-width: 640px;
       margin: 0 auto;
@@ -173,19 +206,30 @@
       color: #6d5356;
       font-size: 10px;
       letter-spacing: 3px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.2s;
+    }
+
+    .footer:hover {
+      color: #a3242d;
     }
 
     @media (max-width: 440px) {
       .countdown {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-
       .logo {
         margin-bottom: 25px;
       }
-
       .unit {
         padding: 18px 4px;
+      }
+      .lives-counter {
+        top: 20px;
+        left: 16px;
+        transform: none;
       }
     }
 
@@ -219,10 +263,10 @@
     .info-button {
       position: fixed;
       top: 16px;
-      left: 16px;
+      right: 16px;
       z-index: 11;
-      width: 64px;
-      height: 64px;
+      width: 52px;
+      height: 52px;
       padding: 0;
       border: 0;
       background: none;
@@ -299,10 +343,9 @@
       margin-bottom: 0.9em;
     }
 
-    .discord-button {
+    .discord-button, .gamebanana-button {
       position: fixed;
       right: 18px;
-      bottom: 68px;
       z-index: 11;
       padding: 12px 18px;
       background: #100909;
@@ -316,31 +359,170 @@
       transition: background 0.15s, transform 0.15s;
     }
 
-    .discord-button:hover {
+    .discord-button { bottom: 68px; }
+    .gamebanana-button { bottom: 18px; }
+
+    .discord-button:hover, .gamebanana-button:hover {
       background: #a3242d;
       transform: scale(1.05);
     }
 
-    .gamebanana-button {
+    .terminal-overlay {
       position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 11;
-      padding: 12px 18px;
-      background: #100909;
-      border: 1px solid #a3242d;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(3, 3, 3, 0.85);
+      backdrop-filter: blur(3px);
+    }
+
+    .terminal-overlay.open {
+      display: flex;
+    }
+
+    .terminal-box {
+      width: min(640px, 90%);
+      height: 380px;
+      background: #080505;
+      border: 2px solid #a3242d;
+      box-shadow: 0 0 30px #a3242d55;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      font-family: "PixelEmulator", "Courier New", monospace;
+    }
+
+    .terminal-header {
+      display: flex;
+      justify-content: space-between;
+      color: #b8464d;
+      font-size: 10px;
+      letter-spacing: 2px;
+      border-bottom: 1px solid #492126;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .terminal-body {
+      flex: 1;
+      overflow-y: auto;
+      color: #f2eaea;
+      font-size: 11px;
+      line-height: 1.6;
+      text-shadow: 0 0 5px #a3242d44;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .terminal-input-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      border-top: 1px solid #492126;
+      padding-top: 8px;
+    }
+
+    .terminal-prompt {
+      color: #ff3b3b;
+      font-size: 11px;
+    }
+
+    .terminal-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
       color: #f2eaea;
       font-family: inherit;
       font-size: 11px;
-      letter-spacing: 2px;
-      text-decoration: none;
-      box-shadow: 0 0 15px #a3242d55;
-      transition: background 0.15s, transform 0.15s;
     }
 
-    .gamebanana-button:hover {
-      background: #a3242d;
-      transform: scale(1.05);
+    .egg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: #030303;
+      flex-direction: column;
+      gap: 25px;
+      font-family: 'PixelEmulator', monospace;
+    }
+
+    .egg-overlay.open {
+      display: flex;
+    }
+
+    .egg-img {
+      width: min(75vw, 200px);
+      image-rendering: pixelated;
+    }
+
+    .egg-dialogue-container {
+      width: min(600px, 90%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .egg-text {
+      color: #f2eaea;
+      font-size: clamp(11px, 2.2vw, 15px);
+      line-height: 2.2;
+      letter-spacing: 2px;
+      text-shadow: 0 0 6px #ff3b3b88;
+      white-space: pre-line;
+    }
+
+    .egg-instructions {
+      color: #6d5356;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    .achievement-popup {
+      position: fixed;
+      bottom: -100px;
+      left: 20px;
+      z-index: 200;
+      background: #100909;
+      border: 1px solid #ffe600;
+      box-shadow: 0 0 20px #ffe60033;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'PixelEmulator', monospace;
+      transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .achievement-popup.show {
+      bottom: 20px;
+    }
+
+    .achievement-icon-img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .achievement-text .ach-title {
+      font-size: 9px;
+      color: #ffe600;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .achievement-text .ach-name {
+      font-size: 11px;
+      color: #f2eaea;
     }
   </style>
 </head>
@@ -378,8 +560,14 @@
       </div>
     </div>
 
-    <div class="footer">FNF: MUSHROOM HELL</div>
+    <div class="footer" id="terminalTrigger">FNF: MUSHROOM HELL</div>
   </main>
+
+  <div class="lives-counter" id="livesCounter">
+    <img src="1up.png" alt="1UP">
+    <span>x</span>
+    <span class="lives-num" id="livesNum">0</span>
+  </div>
 
   <div class="floaters" id="floaters"></div>
 
@@ -392,13 +580,48 @@
       <div class="lore-text">
         <h2>CHANGELOG</h2>
         <ul>
+          <li>Demo 3 Hotfix postponed to Nov 11th for extra polish & bug fixes.</li>
           <li>Added a function to the logo that if you pressed it will work as smb1.</li>
           <li>Objects from smb1 or from time's up v2 are floating across the screen. Grab them and throw them!</li>
           <li>Added this changelog panel LMAO.</li>
           <li>Added buttons to Discord and GameBanana.</li>
-          <li>Added background song.</li>
+          <li>Added background song and fixed in mobile supports.</li>
         </ul>
       </div>
+    </div>
+  </div>
+
+  <div class="terminal-overlay" id="terminalOverlay">
+    <div class="terminal-box">
+      <div class="terminal-header">
+        <span>MUSHROOM_OS v1.0 // SECURE_TERMINAL</span>
+        <span>[ESC TO CLOSE]</span>
+      </div>
+      <div class="terminal-body" id="terminalBody">
+        <div>SYSTEM INITIALIZED...</div>
+        <div>Type 'help' to see commands. Type 'reset' to wipe achievements & lives.</div>
+        <br>
+      </div>
+      <div class="terminal-input-line">
+        <span class="terminal-prompt">&gt;</span>
+        <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+
+  <div class="egg-overlay" id="eggOverlay">
+    <img class="egg-img" src="egg.png" alt="Egg">
+    <div class="egg-dialogue-container">
+      <div class="egg-text" id="eggText">Well, there is a man here.<br>He offers you something.</div>
+      <div class="egg-instructions" id="eggInstructions">[ PRESS SPACE TO CONTINUE ]</div>
+    </div>
+  </div>
+
+  <div class="achievement-popup" id="achievementPopup">
+    <img class="achievement-icon-img" id="achIconImg" src="1up.png" alt="">
+    <div class="achievement-text">
+      <div class="ach-title">ACHIEVEMENT UNLOCKED</div>
+      <div class="ach-name" id="achNameText">Achievement Name</div>
     </div>
   </div>
 
@@ -408,10 +631,338 @@
   <audio id="bgMusic" src="pipe.ogg" preload="auto" loop></audio>
   <audio id="countdownTick" src="tick.ogg" preload="auto"></audio>
   <audio id="logoCoin" src="CoinSmb3.ogg" preload="auto"></audio>
-  <audio id="oneUpSound" src="1up.wav" preload="auto"></audio>
+  <audio id="oneUpSound" src="1up.ogg" preload="auto"></audio>
+  <audio id="eggAudio" src="egg.ogg" preload="auto"></audio>
+  <audio id="menuMoveSound" src="Smbdx/smbdx_menumove.ogg" preload="auto"></audio>
+  <audio id="menuSelectSound" src="Smbdx/smbdx_menuselect.ogg" preload="auto"></audio>
+  <audio id="achievementSound" src="achievement.ogg" preload="auto"></audio>
 
   <script>
-    const releaseDate = new Date(2026, 9, 30, 0, 0, 0).getTime();
+    let totalLives = parseInt(localStorage.getItem("mushroom_hell_lives")) || 0;
+
+    const achievements = {
+      egg: { name: "Egg: Encounter the rare anomaly", icon: "egg.png", unlocked: localStorage.getItem("mushroom_hell_egg") === "true" },
+      lives10: { name: "Extra Life: Reach 10 1-UPs", icon: "1up.png", unlocked: false },
+      lives50: { name: "Life Collector: Reach 50 1-UPs", icon: "1up.png", unlocked: false },
+      lives100: { name: "Century Survivor: Reach 100 1-UPs", icon: "1up.png", unlocked: false },
+      lives250: { name: "Immortal Soul: Reach 250 1-UPs", icon: "1up.png", unlocked: false },
+      lives500: { name: "Mushroom God: Reach 500 1-UPs", icon: "1up.png", unlocked: false },
+      blockBuster: { name: "Block Buster: Throw a floating block", icon: "bb.png", unlocked: false },
+      hacker: { name: "Hacker: Open the secret terminal", icon: "h.png", unlocked: false },
+      curiousSoul: { name: "Curious Soul: Open the Changelog panel", icon: "ui/infothing.png", unlocked: false },
+      pipeSurviver: { name: "New Donk Survivor: Read the lore", icon: "logo.png", unlocked: false }
+    };
+
+    if (localStorage.getItem("mushroom_hell_achievements")) {
+      const saved = JSON.parse(localStorage.getItem("mushroom_hell_achievements"));
+      Object.keys(saved).forEach(key => {
+        if (key !== 'egg' && achievements[key]) achievements[key].unlocked = saved[key].unlocked;
+      });
+    }
+
+    const achievementSound = document.getElementById("achievementSound");
+
+    function playAchievementSound() {
+      if (achievementSound) {
+        achievementSound.currentTime = 0;
+        achievementSound.volume = 0.8;
+        achievementSound.play().catch(() => {});
+      }
+    }
+
+    const eggOverlay = document.getElementById("eggOverlay");
+    const eggText = document.getElementById("eggText");
+    const eggInstructions = document.getElementById("eggInstructions");
+    const eggAudio = document.getElementById("eggAudio");
+    const menuMoveSound = document.getElementById("menuMoveSound");
+    const menuSelectSound = document.getElementById("menuSelectSound");
+    const bgMusic = document.getElementById("bgMusic");
+
+    let eggDialogueStep = 1;
+    let eggChoice = 1;
+    let hasGottenEgg = localStorage.getItem("mushroom_hell_egg") === "true";
+    let isEggActive = false;
+
+    function checkEggSpawn() {
+      const randomChance = Math.floor(Math.random() * 15) + 1;
+      
+      if (randomChance === 1) {
+        isEggActive = true;
+        eggOverlay.classList.add("open");
+        
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+
+        eggAudio.currentTime = 0;
+        eggAudio.volume = 0.8;
+        eggAudio.play().catch(() => {});
+
+        eggDialogueStep = hasGottenEgg ? 5 : 1;
+        updateEggDisplay();
+      }
+    }
+
+    function updateEggDisplay() {
+      if (eggDialogueStep === 1) {
+        eggText.innerHTML = "Well, there is a man here.<br>He offers you something.";
+        eggInstructions.textContent = "[ PRESS SPACE TO CONTINUE ]";
+      } else if (eggDialogueStep === 2) {
+        const yesOption = eggChoice === 1 ? "> YES <   no  " : "  yes   > NO <";
+        eggText.innerHTML = "Well, there is a man here.<br>He offers you something.<br><br>" + yesOption;
+        eggInstructions.textContent = "[ USE A / D OR LEFT / RIGHT & SPACE ]";
+      } else if (eggDialogueStep === 3) {
+        eggText.innerHTML = "You received the \"Egg\".";
+        eggInstructions.textContent = "[ PRESS SPACE TO CONTINUE ]";
+      } else if (eggDialogueStep === 4) {
+        eggText.innerHTML = "...";
+        eggInstructions.textContent = "[ PRESS SPACE TO CONTINUE ]";
+      } else if (eggDialogueStep === 5) {
+        eggText.innerHTML = "Well, there is not man here.";
+        eggInstructions.textContent = "[ PRESS SPACE TO EXIT ]";
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (eggAudio.paused && isEggActive) {
+        eggAudio.play().catch(() => {});
+      }
+
+      if (!isEggActive) return;
+
+      if (eggDialogueStep === 2) {
+        if (e.code === "ArrowLeft" || e.code === "KeyA") {
+          eggChoice = 1;
+          menuMoveSound.currentTime = 0;
+          menuMoveSound.play().catch(() => {});
+          updateEggDisplay();
+        } else if (e.code === "ArrowRight" || e.code === "KeyD") {
+          eggChoice = 2;
+          menuMoveSound.currentTime = 0;
+          menuMoveSound.play().catch(() => {});
+          updateEggDisplay();
+        }
+      }
+
+      if (e.code === "Space" || e.code === "Enter") {
+        e.preventDefault();
+        menuSelectSound.currentTime = 0;
+        menuSelectSound.play().catch(() => {});
+
+        if (eggDialogueStep === 1) {
+          eggDialogueStep = hasGottenEgg ? 5 : 2;
+          updateEggDisplay();
+        } else if (eggDialogueStep === 2) {
+          if (eggChoice === 1) {
+            hasGottenEgg = true;
+            localStorage.setItem("mushroom_hell_egg", "true");
+            achievements.egg.unlocked = true;
+            saveAchievements();
+            unlockAchievementSilent('egg');
+            eggDialogueStep = 3;
+          } else {
+            eggDialogueStep = 4;
+          }
+          updateEggDisplay();
+        } else if (eggDialogueStep === 3 || eggDialogueStep === 4) {
+          eggDialogueStep = 5;
+          updateEggDisplay();
+        } else if (eggDialogueStep === 5) {
+          isEggActive = false;
+          eggOverlay.classList.remove("open");
+          eggAudio.pause();
+          eggAudio.currentTime = 0;
+        }
+      }
+    });
+
+    document.addEventListener("click", () => {
+      if (isEggActive && eggAudio.paused) {
+        eggAudio.play().catch(() => {});
+      }
+    }, { passive: true });
+
+    function saveAchievements() {
+      const saveObj = {};
+      Object.keys(achievements).forEach(k => saveObj[k] = { unlocked: achievements[k].unlocked });
+      localStorage.setItem("mushroom_hell_achievements", JSON.stringify(saveObj));
+    }
+
+    function unlockAchievementSilent(key) {
+      if (!achievements[key]) return;
+      achievements[key].unlocked = true;
+      saveAchievements();
+      playAchievementSound();
+      const popup = document.getElementById("achievementPopup");
+      document.getElementById("achNameText").textContent = achievements[key].name;
+      document.getElementById("achIconImg").src = achievements[key].icon;
+      popup.classList.add("show");
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 4500);
+    }
+
+    const livesCounterEl = document.getElementById("livesCounter");
+    const livesNumEl = document.getElementById("livesNum");
+
+    function updateLivesUI() {
+      livesNumEl.textContent = totalLives;
+      if (totalLives >= 10) {
+        livesCounterEl.classList.add("show");
+      } else {
+        livesCounterEl.classList.remove("show");
+      }
+    }
+
+    function checkLivesAchievements() {
+      if (totalLives >= 10) unlockAchievement('lives10');
+      if (totalLives >= 50) unlockAchievement('lives50');
+      if (totalLives >= 100) unlockAchievement('lives100');
+      if (totalLives >= 250) unlockAchievement('lives250');
+      if (totalLives >= 500) unlockAchievement('lives500');
+    }
+
+    function addLife() {
+      totalLives++;
+      localStorage.setItem("mushroom_hell_lives", totalLives);
+      updateLivesUI();
+      checkLivesAchievements();
+    }
+
+    updateLivesUI();
+
+    function unlockAchievement(key) {
+      if (!achievements[key] || achievements[key].unlocked) return;
+      achievements[key].unlocked = true;
+
+      saveAchievements();
+      playAchievementSound();
+
+      const popup = document.getElementById("achievementPopup");
+      document.getElementById("achNameText").textContent = achievements[key].name;
+      document.getElementById("achIconImg").src = achievements[key].icon;
+      popup.classList.add("show");
+
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 4500);
+    }
+
+    const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA"];
+    let konamiIndex = 0;
+
+    const terminalOverlay = document.getElementById("terminalOverlay");
+    const terminalBody = document.getElementById("terminalBody");
+    const terminalInput = document.getElementById("terminalInput");
+    const terminalTrigger = document.getElementById("terminalTrigger");
+
+    let touchCount = 0;
+    let touchTimer = null;
+
+    terminalTrigger.addEventListener("click", () => {
+      touchCount++;
+      clearTimeout(touchTimer);
+
+      if (touchCount >= 5) {
+        toggleTerminal(true);
+        unlockAchievement('hacker');
+        touchCount = 0;
+      }
+
+      touchTimer = setTimeout(() => {
+        touchCount = 0;
+      }, 1000);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (isEggActive) return;
+
+      if (e.code === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          toggleTerminal(true);
+          unlockAchievement('hacker');
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+
+      if (e.key === "Escape") {
+        toggleTerminal(false);
+      }
+    });
+
+    function toggleTerminal(open) {
+      terminalOverlay.classList.toggle("open", open);
+      if (open) {
+        terminalInput.focus();
+      }
+    }
+
+    terminalInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const cmd = terminalInput.value.trim().toLowerCase();
+        appendTerminalLine(`> ${terminalInput.value}`, "#f2eaea");
+        processCommand(cmd);
+        terminalInput.value = "";
+      }
+    });
+
+    function appendTerminalLine(text, color = "#f2eaea") {
+      const div = document.createElement("div");
+      div.textContent = text;
+      div.style.color = color;
+      terminalBody.appendChild(div);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    function processCommand(cmd) {
+      switch (cmd) {
+        case "help":
+          appendTerminalLine("AVAILABLE COMMANDS:", "#ff3b3b");
+          appendTerminalLine(" - lore: Display official Mushroom Hell lore file.");
+          appendTerminalLine(" - status: Check current progress on Demo 3.");
+          appendTerminalLine(" - achievements: Check your unlocked achievements.");
+          appendTerminalLine(" - reset: Wipe all achievements (except EGG) & lives.");
+          appendTerminalLine(" - clear: Clear the terminal console.");
+          break;
+        case "lore":
+          appendTerminalLine("--- OFFICIAL FILE: MUSHROOM HELL ---", "#ff3b3b");
+          appendTerminalLine("The afternoon in New Donk City was passing by with apparent normality when Boyfriend, Girlfriend, and Pico fell through a collapsing pipe into dark sewers.");
+          appendTerminalLine("A massive suction pipe swallowed Pico and GF, transporting them across dimensions. BF and GF crashland into a distorted Mushroom Kingdom, while Pico is expelled elsewhere.");
+          appendTerminalLine("In World 1-1, BF encounters Mario blocking his path. Mario warns him about 'him'. Shortly after, Mario reveals his true form: Coolrash.");
+          unlockAchievement('pipeSurviver');
+          break;
+        case "status":
+          appendTerminalLine("DEMO 3 DEVELOPMENT STATUS: [ 50% COMPLETED ]", "#ffe600");
+          break;
+        case "achievements":
+          appendTerminalLine("ACHIEVEMENTS LOG:", "#ffe600");
+          Object.keys(achievements).forEach(k => {
+            if (k === 'egg' && !achievements.egg.unlocked) return;
+            const status = achievements[k].unlocked ? "[COMPLETED]" : "[LOCKED]";
+            appendTerminalLine(` - ${achievements[k].name.split(':')[0]}: ${status}`);
+          });
+          break;
+        case "reset":
+          localStorage.removeItem("mushroom_hell_achievements");
+          localStorage.removeItem("mushroom_hell_lives");
+          localStorage.removeItem("mushroom_hell_egg");
+          appendTerminalLine("WIPING ALL DATA, LIVES & EGG... REBOOTING 1s...", "#ffe600");
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+          break;
+        case "clear":
+          terminalBody.innerHTML = "";
+          break;
+        default:
+          appendTerminalLine(`Unknown command: '${cmd}'. Type 'help' for instructions.`, "#6d5356");
+          break;
+      }
+    }
+
+    const releaseDate = new Date(2026, 10, 11, 0, 0, 0).getTime();
 
     const fields = {
       days: document.getElementById("days"),
@@ -424,54 +975,63 @@
     let lastDisplayedSecond = null;
     let countdownInterval = null;
 
-    const bgMusic = document.getElementById("bgMusic");
     bgMusic.volume = 0.5;
 
-    function playMusic() {
-      const playback = bgMusic.play();
-      if (playback && typeof playback.catch === "function") {
-        playback.catch(() => {});
+    const coinSound = document.getElementById("logoCoin");
+    const oneUpSound = document.getElementById("oneUpSound");
+
+    let isAudioUnlocked = false;
+
+    function handleMobileUnlock() {
+      if (!isAudioUnlocked && !isEggActive) {
+        bgMusic.play().then(() => { isAudioUnlocked = true; }).catch(() => {});
+        [tickSound, coinSound, oneUpSound, eggAudio, menuMoveSound, menuSelectSound, achievementSound].forEach(sound => {
+          sound.play().then(() => { sound.pause(); sound.currentTime = 0; }).catch(() => {});
+        });
       }
+      window.removeEventListener("touchstart", handleMobileUnlock);
+      window.removeEventListener("touchend", handleMobileUnlock);
+      window.removeEventListener("pointerdown", handleMobileUnlock);
+      window.removeEventListener("click", handleMobileUnlock);
     }
 
-    playMusic();
-
-    function unlockAudio() {
-      if (bgMusic.paused) {
-        playMusic();
-      }
-    }
-
-    document.addEventListener("pointerdown", unlockAudio, { once: true });
-    document.addEventListener("pointermove", unlockAudio, { once: true });
-    document.addEventListener("keydown", unlockAudio, { once: true });
+    window.addEventListener("touchstart", handleMobileUnlock, { passive: true });
+    window.addEventListener("touchend", handleMobileUnlock, { passive: true });
+    window.addEventListener("pointerdown", handleMobileUnlock, { passive: true });
+    window.addEventListener("click", handleMobileUnlock, { passive: true });
 
     function playTick() {
+      if (bgMusic.paused && !isAudioUnlocked) return;
       const cloneTick = tickSound.cloneNode();
       cloneTick.volume = 0.4;
-      const playback = cloneTick.play();
-      if (playback && typeof playback.catch === "function") {
-        playback.catch(() => {});
-      }
+      cloneTick.play().catch(() => {});
     }
 
     const logo = document.querySelector(".logo");
     const logoWrapper = document.getElementById("logoWrapper");
-    const coinSound = document.getElementById("logoCoin");
-    const oneUpSound = document.getElementById("oneUpSound");
 
     const scoreSequence = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550];
     let scoreIndex = 0;
     let resetTimer = null;
+    let livesResetTimer = null;
 
     logo.addEventListener("click", (e) => {
+      if (!isAudioUnlocked && !isEggActive) { handleMobileUnlock(); }
+
       logo.classList.remove("beat");
       void logo.offsetWidth;
       logo.classList.add("beat");
 
       clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => {
-        scoreIndex = 0;
+      resetTimer = setTimeout(() => { 
+        scoreIndex = 0; 
+      }, 1500);
+
+      clearTimeout(livesResetTimer);
+      livesResetTimer = setTimeout(() => {
+        totalLives = 0;
+        localStorage.setItem("mushroom_hell_lives", totalLives);
+        updateLivesUI();
       }, 1500);
 
       let textToShow = "";
@@ -480,17 +1040,15 @@
       if (scoreIndex < scoreSequence.length) {
         textToShow = scoreSequence[scoreIndex];
         scoreIndex++;
-
         const cloneCoin = coinSound.cloneNode();
-        const playback = cloneCoin.play();
-        if (playback && typeof playback.catch === "function") playback.catch(() => {});
+        cloneCoin.play().catch(() => {});
       } else {
         textToShow = "1UP";
         isOneUp = true;
-
         const clone1Up = oneUpSound.cloneNode();
-        const playback = clone1Up.play();
-        if (playback && typeof playback.catch === "function") playback.catch(() => {});
+        clone1Up.play().catch(() => {});
+        
+        addLife();
       }
 
       const popup = document.createElement("div");
@@ -505,14 +1063,7 @@
       popup.style.top = `${y}px`;
 
       logoWrapper.appendChild(popup);
-
-      popup.addEventListener("animationend", () => {
-        popup.remove();
-      });
-    });
-
-    logo.addEventListener("animationend", () => {
-      logo.classList.remove("beat");
+      popup.addEventListener("animationend", () => { popup.remove(); });
     });
 
     const infoButton = document.getElementById("infoButton");
@@ -521,14 +1072,13 @@
     function setLoreOpen(open) {
       lorePanel.classList.toggle("open", open);
       infoButton.setAttribute("aria-expanded", String(open));
+      if (open) {
+        unlockAchievement('curiousSoul');
+      }
     }
 
     infoButton.addEventListener("click", () => {
       setLoreOpen(!lorePanel.classList.contains("open"));
-    });
-
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") setLoreOpen(false);
     });
 
     const floaterLayer = document.getElementById("floaters");
@@ -569,22 +1119,16 @@
       floaterLayer.appendChild(el);
 
       const f = {
-        el,
-        width,
-        height,
+        el, width, height,
         x: fromLeft ? -width : window.innerWidth,
         y: Math.random() * Math.max(window.innerHeight - height, 0),
         vx: (fromLeft ? 1 : -1) * DRIFT_SPEED * (0.6 + Math.random() * 0.8),
-        vy: 0,
-        drift: 0,
+        vy: 0, drift: 0,
         angle: Math.random() * 360,
         spin: (Math.random() - 0.5) * 60,
         bobPhase: Math.random() * Math.PI * 2,
-        grabbed: false,
-        thrown: false,
-        pointerId: null,
-        offsetX: 0,
-        offsetY: 0,
+        grabbed: false, thrown: false,
+        pointerId: null, offsetX: 0, offsetY: 0,
         history: []
       };
       f.drift = f.vx;
@@ -624,12 +1168,13 @@
           f.vy = (last.y - first.y) / dt;
           f.spin = f.vx * 0.3;
         } else {
-          f.vx = 0;
-          f.vy = 0;
+          f.vx = 0; f.vy = 0;
         }
 
         f.drift = (f.vx >= 0 ? 1 : -1) * DRIFT_SPEED;
         f.thrown = true;
+
+        unlockAchievement('blockBuster');
       }
 
       el.addEventListener("pointerup", release);
@@ -672,8 +1217,7 @@
         }
 
         const bob = f.grabbed ? 0 : Math.sin(f.bobPhase) * 12;
-        f.el.style.transform =
-          `translate(${f.x}px, ${f.y + bob}px) rotate(${f.angle}deg)`;
+        f.el.style.transform = `translate(${f.x}px, ${f.y + bob}px) rotate(${f.angle}deg)`;
       }
 
       requestAnimationFrame(animateFloaters);
@@ -694,13 +1238,8 @@
       const remaining = releaseDate - Date.now();
 
       if (remaining <= 0) {
-        Object.values(fields).forEach(field => {
-          field.textContent = "00";
-        });
-
-        document.querySelector(".heading").textContent =
-          "THE WAIT IS OVER";
-
+        Object.values(fields).forEach(field => { field.textContent = "00"; });
+        document.querySelector(".heading").textContent = "THE WAIT IS OVER";
         if (countdownInterval !== null) {
           clearInterval(countdownInterval);
           countdownInterval = null;
@@ -710,14 +1249,9 @@
 
       const total = Math.floor(remaining / 1000);
 
-      fields.days.textContent =
-        String(Math.floor(total / 86400)).padStart(2, "0");
-
-      fields.hours.textContent =
-        String(Math.floor((total % 86400) / 3600)).padStart(2, "0");
-
-      fields.minutes.textContent =
-        String(Math.floor((total % 3600) / 60)).padStart(2, "0");
+      fields.days.textContent = String(Math.floor(total / 86400)).padStart(2, "0");
+      fields.hours.textContent = String(Math.floor((total % 86400) / 3600)).padStart(2, "0");
+      fields.minutes.textContent = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
 
       const seconds = total % 60;
       fields.seconds.textContent = String(seconds).padStart(2, "0");
@@ -731,6 +1265,10 @@
 
     updateCountdown();
     countdownInterval = setInterval(updateCountdown, 200);
+
+    window.addEventListener("load", () => {
+      checkEggSpawn();
+    });
   </script>
 </body>
 </html>

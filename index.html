@@ -522,6 +522,34 @@
       white-space: pre-line;
     }
 
+    .egg-choice-buttons {
+      display: none;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .egg-choice-buttons.show {
+      display: flex;
+    }
+
+    .egg-btn {
+      background: #100909;
+      border: 2px solid #a3242d;
+      color: #f2eaea;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 8px 18px;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+
+    .egg-btn.selected {
+      background: #a3242d;
+      color: #ffe600;
+      border-color: #ffe600;
+    }
+
     .egg-instructions {
       color: #6d5356;
       font-size: 8.5px;
@@ -658,6 +686,10 @@
     <img class="egg-img" src="egg.png" alt="Egg">
     <div class="egg-dialogue-container" id="eggDialogueContainer">
       <div class="egg-text" id="eggText">Well, there is a man here.<br>He offers you something.</div>
+      <div class="egg-choice-buttons" id="eggChoiceButtons">
+        <button class="egg-btn" id="eggYesBtn" type="button">YES</button>
+        <button class="egg-btn" id="eggNoBtn" type="button">NO</button>
+      </div>
       <div class="egg-instructions" id="eggInstructions">[ PRESS SPACE / TAP TO CONTINUE ]</div>
     </div>
   </div>
@@ -719,6 +751,9 @@
     const eggText = document.getElementById("eggText");
     const eggInstructions = document.getElementById("eggInstructions");
     const eggDialogueContainer = document.getElementById("eggDialogueContainer");
+    const eggChoiceButtons = document.getElementById("eggChoiceButtons");
+    const eggYesBtn = document.getElementById("eggYesBtn");
+    const eggNoBtn = document.getElementById("eggNoBtn");
     const eggAudio = document.getElementById("eggAudio");
     const menuMoveSound = document.getElementById("menuMoveSound");
     const menuSelectSound = document.getElementById("menuSelectSound");
@@ -750,28 +785,67 @@
 
     function updateEggDisplay() {
       const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const continueText = isMobile ? "[ TAP TO CONTINUE ]" : "[ PRESS SPACE TO CONTINUE ]";
-      const exitText = isMobile ? "[ TAP TO EXIT ]" : "[ PRESS SPACE TO EXIT ]";
-      const choiceText = isMobile ? "[ TAP CHOICE OR USE A/D ]" : "[ USE A / D OR LEFT / RIGHT & SPACE ]";
 
-      if (eggDialogueStep === 1) {
-        eggText.innerHTML = "Well, there is a man here.<br>He offers you something.";
-        eggInstructions.textContent = continueText;
-      } else if (eggDialogueStep === 2) {
-        const yesOption = eggChoice === 1 ? "> YES <   no  " : "  yes   > NO <";
-        eggText.innerHTML = "Well, there is a man here.<br>He offers you something.<br><br>" + yesOption;
-        eggInstructions.textContent = choiceText;
-      } else if (eggDialogueStep === 3) {
-        eggText.innerHTML = "You received the \"Egg\".";
-        eggInstructions.textContent = continueText;
-      } else if (eggDialogueStep === 4) {
-        eggText.innerHTML = "...";
-        eggInstructions.textContent = continueText;
-      } else if (eggDialogueStep === 5) {
-        eggText.innerHTML = "Well, there is not man here.";
-        eggInstructions.textContent = exitText;
+      if (eggDialogueStep === 2) {
+        eggChoiceButtons.classList.add("show");
+        if (isMobile) {
+          eggText.innerHTML = "Well, there is a man here.<br>He offers you something.";
+          eggInstructions.textContent = "[ TAP YES OR NO ]";
+          eggYesBtn.classList.toggle("selected", eggChoice === 1);
+          eggNoBtn.classList.toggle("selected", eggChoice === 2);
+        } else {
+          const yesOption = eggChoice === 1 ? "> YES <   no  " : "  yes   > NO <";
+          eggText.innerHTML = "Well, there is a man here.<br>He offers you something.<br><br>" + yesOption;
+          eggInstructions.textContent = "[ USE A / D OR LEFT / RIGHT & SPACE ]";
+          eggChoiceButtons.classList.remove("show");
+        }
+      } else {
+        eggChoiceButtons.classList.remove("show");
+        const continueText = isMobile ? "[ TAP TO CONTINUE ]" : "[ PRESS SPACE TO CONTINUE ]";
+        const exitText = isMobile ? "[ TAP TO EXIT ]" : "[ PRESS SPACE TO EXIT ]";
+
+        if (eggDialogueStep === 1) {
+          eggText.innerHTML = "Well, there is a man here.<br>He offers you something.";
+          eggInstructions.textContent = continueText;
+        } else if (eggDialogueStep === 3) {
+          eggText.innerHTML = "You received the \"Egg\".";
+          eggInstructions.textContent = continueText;
+        } else if (eggDialogueStep === 4) {
+          eggText.innerHTML = "...";
+          eggInstructions.textContent = continueText;
+        } else if (eggDialogueStep === 5) {
+          eggText.innerHTML = "Well, there is not man here.";
+          eggInstructions.textContent = exitText;
+        }
       }
     }
+
+    function handleEggChoice(choice) {
+      eggChoice = choice;
+      menuSelectSound.currentTime = 0;
+      menuSelectSound.play().catch(() => {});
+      if (eggChoice === 1) {
+        hasGottenEgg = true;
+        localStorage.setItem("mushroom_hell_egg", "true");
+        achievements.egg.unlocked = true;
+        saveAchievements();
+        unlockAchievementSilent('egg');
+        eggDialogueStep = 3;
+      } else {
+        eggDialogueStep = 4;
+      }
+      updateEggDisplay();
+    }
+
+    eggYesBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      handleEggChoice(1);
+    });
+
+    eggNoBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      handleEggChoice(2);
+    });
 
     function advanceEggStep() {
       menuSelectSound.currentTime = 0;
@@ -779,18 +853,6 @@
 
       if (eggDialogueStep === 1) {
         eggDialogueStep = hasGottenEgg ? 5 : 2;
-        updateEggDisplay();
-      } else if (eggDialogueStep === 2) {
-        if (eggChoice === 1) {
-          hasGottenEgg = true;
-          localStorage.setItem("mushroom_hell_egg", "true");
-          achievements.egg.unlocked = true;
-          saveAchievements();
-          unlockAchievementSilent('egg');
-          eggDialogueStep = 3;
-        } else {
-          eggDialogueStep = 4;
-        }
         updateEggDisplay();
       } else if (eggDialogueStep === 3 || eggDialogueStep === 4) {
         eggDialogueStep = 5;
@@ -806,12 +868,7 @@
     eggDialogueContainer.addEventListener("click", (e) => {
       e.stopPropagation();
       if (!isEggActive) return;
-      if (eggDialogueStep === 2) {
-        eggChoice = eggChoice === 1 ? 2 : 1;
-        menuMoveSound.currentTime = 0;
-        menuMoveSound.play().catch(() => {});
-        updateEggDisplay();
-      } else {
+      if (eggDialogueStep !== 2) {
         advanceEggStep();
       }
     });
@@ -834,6 +891,10 @@
           menuMoveSound.currentTime = 0;
           menuMoveSound.play().catch(() => {});
           updateEggDisplay();
+        } else if (e.code === "Space" || e.code === "Enter") {
+          e.preventDefault();
+          handleEggChoice(eggChoice);
+          return;
         }
       }
 
@@ -1213,6 +1274,7 @@
       f.drift = f.vx;
 
       el.addEventListener("pointerdown", event => {
+        event.stopPropagation();
         event.preventDefault();
         el.setPointerCapture(event.pointerId);
         f.grabbed = true;
